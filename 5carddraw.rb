@@ -1,5 +1,5 @@
 
-values = (1..10).to_a + ['Jack', 'Queen', 'King', 'Ace']
+values = (1..10).to_a + ["11(Jack)", "12(Queen)", "13(King)", "14(Ace)"]
 
 deck = { "clubs" => values,
          "diamonds" => values,
@@ -54,8 +54,9 @@ end
 
 
 def straight(hand)
-  sorted_hand = hand.sort
-  
+  numbers = hand.map { |card| card.to_i }
+  numbers.sort!
+  puts "Straight!" if numbers.each { |card| numbers[card].to_i == numbers[card-1].to_i + 1 }
 end
 
 # Checks everything.
@@ -73,4 +74,6 @@ puts ""
 
 p hand2
 what_happened(hand2)
+
+
    
