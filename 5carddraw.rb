@@ -52,11 +52,16 @@ def four_of_a_kind(hand)
   end
 end      
 
-
+# Check if lowest card to highest card go in consecutive order(I.E. 2,3,4,5)
 def straight(hand)
+  new_arr = []
   numbers = hand.map { |card| card.to_i }
   numbers.sort!
-  puts "Straight!" if numbers.each { |card| numbers[card].to_i == numbers[card-1].to_i + 1 }
+  new_arr << numbers[0]
+  until new_arr[-1] == new_arr[0] + 4
+    new_arr << new_arr[-1] + 1
+  end
+  puts "Straight! from #{new_arr[0]} to #{new_arr[-1]}" if new_arr == numbers  
 end
 
 # Checks everything.
@@ -74,6 +79,3 @@ puts ""
 
 p hand2
 what_happened(hand2)
-
-
-   
