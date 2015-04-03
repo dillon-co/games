@@ -10,7 +10,7 @@ hand1suit = []
 hand2suit = []
 
 
-hand1 = ["10", "11", "12", "13", "14"]
+hand1 = ["10", "3", "3", "12", "12"]
 hand2 = []
 
 5.times do # This makes the suits of each hand
@@ -30,15 +30,15 @@ end
 
 def two_of_a_kind(hand)
   h = Hash.new(0)
-  hand.each do |e| 
-    h[e] += 1
-    unless h[e] == 3 || h[e] == 4 
-      if h[e] == 2 
-          puts "Two of a kind with #{e}"
-      end    
-    end        
+    hand.each do |card| 
+      h[card] += 1
+        if h[card] == 2 && h.keys.uniq.length >= 3
+            puts "Two of a kind with #{card}"
+            return true
+        end               
   end  
 end
+
 
 def three_of_a_kind(hand)
   h = Hash.new(0)
@@ -47,6 +47,7 @@ def three_of_a_kind(hand)
     unless h[e] == 4 
       if h[e] == 3
         puts "Three of a kind with #{e}"
+        return true
       end  
     end
   end
@@ -100,7 +101,17 @@ def royal_flush(hand, suit)
   end  
 end   
 
+def full_house(hand)
+  if hand.uniq.length == 2 && two_of_a_kind(hand) == true && three_of_a_kind(hand) == true
+    puts "My God It's A Full House!!"
+  end 
+end  
 
+def two_pair(hand)
+  if hand.uniq.length == 3 && two_of_a_kind(hand) == true
+    puts "TWO PAIR!!"
+  end  
+end    
 
 # Checks everything.
 def what_happened(hand, suit)
@@ -111,6 +122,8 @@ def what_happened(hand, suit)
   flush(suit)
   straight_flush(hand, suit)
   royal_flush(hand, suit)
+  full_house(hand)
+  two_pair(hand)
 end 
 
 p hand1suit
