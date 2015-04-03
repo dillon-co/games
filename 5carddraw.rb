@@ -88,14 +88,17 @@ end
 
 
 
-#
+# Checks for a a straight and a flush
 def straight_flush(hand, suit)
   puts "Jesus Crist Its A Straight Flush!" if flush(suit) == true && straight(hand) == true
 end
 
-def royal_flush(hand)   
-  # puts "MOTHER OF GOD, ITS A ROYAL FLUSH!!!!" if @flush == true && @straight == true
-end
+# Checks for a straight flush with cards value 10 and higher
+def royal_flush(hand, suit)
+  if straight(hand) == true && flush(suit) == true && hand.each { |card| card.to_i >= 10 }
+    puts "MOTHER OF GOD, ITS A ROYAL FLUSH!!!!" 
+  end  
+end   
 
 
 
@@ -107,7 +110,7 @@ def what_happened(hand, suit)
   straight(hand)
   flush(suit)
   straight_flush(hand, suit)
-  royal_flush(hand)
+  royal_flush(hand, suit)
 end 
 
 p hand1suit
