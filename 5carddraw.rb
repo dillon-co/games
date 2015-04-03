@@ -80,7 +80,7 @@ end
 
 #Checks if all suits are the same
 def flush(hand)
-  if hand[0] == hand[1] &&= hand[2] &&= hand[3] &&= hand[4] 
+  if hand.uniq.length == 1
     puts "Flush with #{hand[0]}!"
     return true
   end     
@@ -93,12 +93,9 @@ def straight_flush(hand, suit)
   puts "Jesus Crist Its A Straight Flush!" if flush(suit) == true && straight(hand) == true
 end
 
-def royal_flush(hand) 
-  # if  
-  #   puts "ITS A ROYAL FLUSH!!!!" if @flush == true && @straight == true
-  # end   
+def royal_flush(hand)   
+  # puts "MOTHER OF GOD, ITS A ROYAL FLUSH!!!!" if @flush == true && @straight == true
 end
-
 
 
 
