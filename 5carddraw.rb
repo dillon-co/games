@@ -9,7 +9,7 @@ deck = { "clubs" => values,
 hand1suit = []
 hand2suit = []
 
-@@var = 0
+@var = 0
 
 
 hand1 = []
@@ -22,7 +22,6 @@ end
 
 
 5.times do # Creates the values of the cards.
-
   hand1 << deck[deck.keys.sample].sample
   hand2 << deck[deck.keys.sample].sample
 end
@@ -158,16 +157,56 @@ def what_happened(hand, suit)
   elsif @var == 2
     puts "TWO PAIR!!"
   elsif @var == 1  
-    puts "Pair!!"    
+    puts "Pair!!"
+  else
+    puts "Wow, nothing really happened here... luser"      
   end  
 end 
 
+
+def hand_1(arg1, arg2)
+  what_happened(arg1, arg2)
+  @hand1_val = @var
+end
+
+
+def hand_2(arg1, arg2)
+  what_happened(arg1, arg2)
+  @hand2_val = @var
+end  
+
+
+def get_winner
+  if @hand1_val > @hand2_val
+    puts "Player 1 wins!"
+  elsif @hand2_val > @hand1_val  
+    puts "Player 2 wins!"
+  else 
+    puts "No one wins! or maybe someon has we just don't know who..."  
+  end  
+end
+
 p hand1suit
 p hand1
-what_happened(hand1, hand1suit)
+
+
+hand_1(hand1, hand1suit)
 
 puts ""
 
 p hand2suit
 p hand2
-what_happened(hand2, hand2suit)
+
+hand_2(hand2, hand2suit)
+
+get_winner
+
+
+
+
+
+
+
+
+
+
