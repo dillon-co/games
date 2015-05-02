@@ -9,7 +9,6 @@ deck = { "clubs" => values,
 hand1suit = []
 hand2suit = []
 
-@var = 0
 
 
 hand1 = []
@@ -130,6 +129,7 @@ end
 
 # Checks everything.
 def what_happened(hand, suit)
+@var = 0
   two_of_a_kind(hand)
   three_of_a_kind(hand)
   four_of_a_kind(hand)
