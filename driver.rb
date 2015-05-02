@@ -1,9 +1,9 @@
-@player = '/\\'
+@player = ' /\\'
 @life = true
 @boardwidth = 30
 @boardheight = 30
-@blocks = "[]"
-@field =  "  "
+@blocks = " [] "
+@field =  "    "
 @board = Array.new(@boardheight) {Array.new (@boardwidth) {@field}} 
 @start_position = (@boardheight-1)
 
@@ -25,7 +25,7 @@ end
 
 def position(pos)
   @position = @start_position
-  if @board[@position-1][pos] == @blocks
+  if @board[@position][pos] == @blocks
     @life =  false
   end  
   @board[@position][pos] = @player
