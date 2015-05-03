@@ -8,17 +8,17 @@ class Gear
   end
 
   def ratio
-    @chainring / cog.to_f
+    chainring / cog.to_f
   end  
 
   def gear_inches
     # tire goes around rim twice for diameter
-    ratio * (@rim + (@tire * 2))
+    ratio * (rim + (tire * 2))
   end
 end
 
 
-# Making it user friendly :)
+# Making it user friendly :)  
 puts "chainring size?"
 chainring_size = gets.chomp.to_f
 puts "cog size?"
@@ -29,7 +29,7 @@ puts "tire size?"
 tire_size = gets.chomp.to_f
 
 gear =  Gear.new(chainring_size, cog_size, rim_size, tire_size)
-
+  
 puts "The ratio with regard to the wheels is #{gear.gear_inches}"
 sleep 2
 puts "\nThe ratio of gears is #{gear.ratio}"
