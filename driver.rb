@@ -1,9 +1,9 @@
-@player = ' /\\'
+@player = '/\\'
 @life = true
 @boardwidth = 30
 @boardheight = 30
-@blocks = " [] "
-@field =  "    "
+@blocks = "[]"
+@field =  "  "
 @board = Array.new(@boardheight) {Array.new (@boardwidth) {@field}} 
 @start_position = (@boardheight-1)
 
@@ -37,7 +37,7 @@ def play
     draw
     run
     position(15)
-    sleep 0.07
+    sleep 0.05
   end
 end
 
