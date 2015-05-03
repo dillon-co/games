@@ -17,6 +17,8 @@ class Gear
   end
 end
 
+
+# Making it user friendly :)
 puts "chainring size?"
 chainring_size = gets.chomp.to_f
 puts "cog size?"
