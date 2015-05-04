@@ -22,7 +22,7 @@ class CubeRunner
   end
 
   def run
-    @board.unshift(Array.new(@boardwidth) { rand(@row_pos * 0.75) == 1 ? @blocks : @field})
+    @board.unshift(Array.new(@boardwidth) { rand(15) == 1 ? @blocks : @field})
     @board.pop
   end 
 
@@ -45,6 +45,9 @@ class CubeRunner
   end
 
   def move(pos)
+    if @board[@start_position-2][pos] == @blocks && (@board[@start_position-2][pos+1] == @blocks || @board[@start_position-2][pos-1] == @blocks)
+      rand(2) == 1 ? move_right(pos) : move_left(pos)
+    end
     if @board[@start_position-1][pos] == @blocks
       if @board[@start_position-1][pos-1] == @blocks || @board[@start_position][pos-1] == @blocks
         move_right(pos)
@@ -56,7 +59,7 @@ class CubeRunner
     end  
     detect_colision(pos)
   end 
-   
+
 
   def play 
     while @life == true     
