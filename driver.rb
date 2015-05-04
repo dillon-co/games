@@ -1,9 +1,9 @@
 class CubeRunner
-  def initialize(boardwidth, boardheight)
+  def initialize(length)
     @player = '/\\'
     @life = true
-    @boardwidth = boardwidth
-    @boardheight = boardheight
+    @boardwidth = length
+    @boardheight = length
     @blocks = "[]"
     @field =  "  "
     @board = Array.new(@boardheight) {Array.new (@boardwidth) {@field}} 
@@ -45,6 +45,6 @@ class CubeRunner
   end
 end
 
-game = CubeRunner.new(30, 30)
+game = CubeRunner.new(30)
 
 game.play 
