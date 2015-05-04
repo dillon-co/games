@@ -4,10 +4,11 @@ class CubeRunner
     @life = true
     @boardwidth = length
     @boardheight = length
-    @blocks = "[]"
-    @field =  "  "
+    @blocks = "[] "
+    @field =  "   "
     @board = Array.new(@boardheight) {Array.new (@boardwidth) {@field}} 
     @start_position = (@boardheight-1)
+    @row_pos = length / 2
   end
 
   def draw
@@ -39,12 +40,11 @@ class CubeRunner
     while @life == true
       draw
       run
-      position(15)
+      position(@row_pos)
       sleep 0.05
     end
   end
 end
 
-game = CubeRunner.new(30)
-
+game = CubeRunner.new(50)
 game.play 
