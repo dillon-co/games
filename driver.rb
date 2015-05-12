@@ -26,10 +26,6 @@ class CubeRunner
     @board.pop
   end 
 
-  def fix_it(pos)
-    if @life == false
-      
-
   def detect_colision(pos)
     @position = @start_position
     if @board[@position][pos] == @blocks
