@@ -3,6 +3,10 @@ class Player
     @lives = number_of_lives
   end
 
+  def life_count
+    @lives
+  end    
+
   def alive?
     @lives > 0
   end
@@ -16,23 +20,18 @@ class Player
   end
 
   def life_bar_image
-    hit
-    bar = "=" * @lives
-    @bar_array = bar.split('')
-  end  
-
-  def life_bar_array
-    @bar_array
+    "=="
   end  
 end
 
 class Board
-  def initialize(length)
+  def initialize(length, life_length)
     @blocks = "[]"
     @field =  "  "
     @boardwidth = length
     @boardheight = length 
     @board = Array.new(length) {Array.new (length) {@field}}
+    @player = ::Player.new(life_length)
   end
 
   def board
@@ -47,18 +46,18 @@ class Board
     @field
   end
 
-  def life_bar
-    ::Player.new.life_bar_array.to_a.each_with_index do |health, index|
-      @board[1][index] = health
-    end  
+  def life_bar(pos)
+    @board[pos][0...@player.life_count].each_with_index do |item, index|
+      @board[pos][index] = @player.life_bar_image
+    end 
   end  
 end    
 
 class CubeRunner
-  def initialize(length, speed)
+  def initialize(length, speed, life_number)
     @length = length
     @player = ::Player.new(2)
-    @board_items = ::Board.new(length)
+    @board_items = ::Board.new(length, life_number)
     @board = @board_items.board
     @start_position = (length-1)
     @row_pos = length / 2
@@ -77,6 +76,7 @@ class CubeRunner
 
   def run
     @board.unshift(Array.new(@length) { rand(15) == 1 ? @board_items.blocks : @board_items.field})
+    @board_items.life_bar(@start_position)
     @board.pop
   end
 
@@ -86,7 +86,6 @@ class CubeRunner
       @player.hit
     end
     @board[@position][pos] = @player.image
-    @board_items.life_bar
   end
 
   def move_left(pos)
@@ -125,5 +124,5 @@ class CubeRunner
   end
 end
 
-game = CubeRunner.new(30, 0.03)
+game = CubeRunner.new(30, 0.03, 10)
 puts game.play
