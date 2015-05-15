@@ -3,6 +3,10 @@ class Player
     @lives = number_of_lives
   end
 
+  def hit
+    @lives -= 1
+  end
+
   def life_count
     @lives
   end    
@@ -11,27 +15,24 @@ class Player
     @lives > 0
   end
 
-  def hit
-    @lives -= 1
-  end
 
   def image
     '/\\'
   end
 
   def life_bar_image
-    "=="
+    "|="
   end  
 end
 
 class Board
-  def initialize(length, life_length)
+  def initialize(length)
     @blocks = "[]"
     @field =  "  "
     @boardwidth = length
     @boardheight = length 
     @board = Array.new(length) {Array.new (length) {@field}}
-    @player = ::Player.new(life_length)
+    @player = ::Player.new(2)
   end
 
   def board
@@ -54,10 +55,11 @@ class Board
 end    
 
 class CubeRunner
-  def initialize(length, speed, life_number)
+  def initialize(length, speed, lives)
     @length = length
-    @player = ::Player.new(2)
-    @board_items = ::Board.new(length, life_number)
+    @lives = lives
+    @player = ::Player.new(lives)
+    @board_items = ::Board.new(length)
     @board = @board_items.board
     @start_position = (length-1)
     @row_pos = length / 2
@@ -98,7 +100,7 @@ class CubeRunner
     @row_pos = (pos+1)
   end
 
-  def move(pos)
+  def movement_ai(pos)
     if @board[@start_position-2][pos] == @board_items.blocks && (@board[@start_position-2][pos+1] == @board_items.blocks || @board[@start_position-2][pos-1] == @blocks)
       rand(2) == 1 ? move_right(pos) : move_left(pos)
     end
@@ -116,7 +118,7 @@ class CubeRunner
 
   def play
     while @player.alive?
-      move(@row_pos)
+      movement_ai(@row_pos)
       draw
       run
       sleep (@speed)
@@ -124,5 +126,5 @@ class CubeRunner
   end
 end
 
-game = CubeRunner.new(30, 0.03, 10)
+game = CubeRunner.new(30, 0.03, 2)
 puts game.play
