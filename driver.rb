@@ -1,38 +1,46 @@
 class Player
-  def initialize(number_of_lives=10)
+  attr_accessor :lives
+  def initialize(length, number_of_lives=10)
     @lives = number_of_lives
+    @length = length
+  end
+
+  def alive?
+    @lives > 0
   end
 
   def hit
     @lives -= 1
   end
 
-  def life_count
-    @lives
-  end    
-
-  def alive?
-    @lives > 0
-  end
-
-
   def image
     '/\\'
   end
 
   def life_bar_image
-    "|="
+    Array.new(@lives, "|=")
   end  
+
+  def life_count
+    @lives
+  end    
 end
 
 class Board
-  def initialize(length)
+  attr_accessor :player
+  def initialize(length, lives)
     @blocks = "[]"
     @field =  "  "
     @boardwidth = length
     @boardheight = length 
     @board = Array.new(length) {Array.new (length) {@field}}
-    @player = ::Player.new(2)
+    @player = ::Player.new(length, lives)
+  end
+  
+  def update  
+    @board.unshift(Array.new(@boardwidth) { rand(3) == 1 ? @blocks : @field})
+    life_bar(@boardwidth)
+    @board.pop
   end
 
   def board
@@ -48,9 +56,9 @@ class Board
   end
 
   def life_bar(pos)
-    @board[pos][0...@player.life_count].each_with_index do |item, index|
-      @board[pos][index] = @player.life_bar_image
-    end 
+    player.life_bar_image.each_with_index do |health, h_index|
+      @board[pos-1][h_index] = health
+    end    
   end  
 end    
 
@@ -58,12 +66,20 @@ class CubeRunner
   def initialize(length, speed, lives)
     @length = length
     @lives = lives
-    @player = ::Player.new(lives)
-    @board_items = ::Board.new(length)
+    @player = ::Board.new(length, lives).player 
+    @board_items = ::Board.new(length, lives)
     @board = @board_items.board
     @start_position = (length-1)
     @row_pos = length / 2
     @speed = speed
+  end
+  
+  def detect_colision(pos)
+    @position = @start_position
+    if @board[@position][pos] == @board_items.blocks
+      @player.hit
+    end
+    @board[@position][pos] = @player.image
   end
 
   def draw
@@ -76,20 +92,6 @@ class CubeRunner
     end
   end
 
-  def run
-    @board.unshift(Array.new(@length) { rand(15) == 1 ? @board_items.blocks : @board_items.field})
-    @board_items.life_bar(@start_position)
-    @board.pop
-  end
-
-  def detect_colision(pos)
-    @position = @start_position
-    if @board[@position][pos] == @board_items.blocks
-      @player.hit
-    end
-    @board[@position][pos] = @player.image
-  end
-
   def move_left(pos)
     @board[@start_position][pos], @board[@start_position][pos-1] = @board[@start_position][pos-1], @board[@start_position][pos]
     @row_pos = (pos-1)
@@ -99,6 +101,7 @@ class CubeRunner
     @board[@start_position][pos], @board[@start_position][pos+1] = @board[@start_position][pos+1], @board[@start_position][pos]
     @row_pos = (pos+1)
   end
+
 
   def movement_ai(pos)
     if @board[@start_position-2][pos] == @board_items.blocks && (@board[@start_position-2][pos+1] == @board_items.blocks || @board[@start_position-2][pos-1] == @blocks)
@@ -116,11 +119,15 @@ class CubeRunner
     detect_colision(pos)
   end
 
+  def run
+    @board_items.update
+  end
+
   def play
     while @player.alive?
+      run
       movement_ai(@row_pos)
       draw
-      run
       sleep (@speed)
     end
   end
