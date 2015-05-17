@@ -37,17 +37,9 @@ class Board
   end
   
   def update  
-    @board.unshift(Array.new(@boardwidth) { rand(3) == 1 ? @blocks : @field})
+    @board.unshift(Array.new(@boardwidth) { rand(15) == 1 ? @blocks : @field})
     @board.pop
   end
-
-  # def blocks
-  #   @blocks
-  # end
-  
-  # def field
-  #   @field
-  # end
 end    
 
 class CubeRunner
@@ -72,14 +64,14 @@ class CubeRunner
 
   def draw
     system 'clear' or system 'cls'
-    # I'm calling it thing because I don't know what else to say. :P
-    @board[@length][0..@lives].each { |thing| thing = player.life_bar_image }
     @board.board.each_with_index do |cord, x|
       cord.each_with_index do |pos, y|                              
         print "#{@board.board[x][y]}"
       end
       puts ""
     end
+    # I Guess it's good to take a break every once in a while.... This is too damn simple..
+    puts (@player.life_bar_image * @player.lives)
   end
 
   def move_left(pos)
@@ -123,5 +115,5 @@ class CubeRunner
   end
 end
 
-game = CubeRunner.new(30, 0.03, 2)
+game = CubeRunner.new(30, 0.03, 10)
 puts game.play
