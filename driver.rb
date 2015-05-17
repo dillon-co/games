@@ -54,8 +54,8 @@ class CubeRunner
   attr_accessor :player
   def initialize(length, speed, lives)
     @length = length
-    @lives = lives
     @player = ::Player.new(length, lives)
+    @lives = @player.life_count
     @board = ::Board.new(length, lives)
     @start_position = (length-1)
     @row_pos = length / 2
@@ -72,7 +72,8 @@ class CubeRunner
 
   def draw
     system 'clear' or system 'cls'
-    @board[@length][0..@lives] = player.life_bar_image
+    # I'm calling it thing because I don't know what else to say. :P
+    @board[@length][0..@lives].each { |thing| thing = player.life_bar_image }
     @board.board.each_with_index do |cord, x|
       cord.each_with_index do |pos, y|                              
         print "#{@board.board[x][y]}"
