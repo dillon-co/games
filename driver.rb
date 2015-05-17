@@ -18,7 +18,7 @@ class Player
   end
 
   def life_bar_image
-    @life_bar_image = Array.new(life_count, "|=")
+    "|="
   end  
 
   def life_count
@@ -72,19 +72,14 @@ class CubeRunner
 
   def draw
     system 'clear' or system 'cls'
+    @board[@length][0..@lives] = player.life_bar_image
     @board.board.each_with_index do |cord, x|
-      cord.each_with_index do |pos, y|
+      cord.each_with_index do |pos, y|                              
         print "#{@board.board[x][y]}"
       end
       puts ""
     end
   end
-  
-  def life_bar(pos)
-    player.life_bar_image.each_with_index do |health, h_index|
-      @board.board[pos][h_index] = health
-    end    
-  end  
 
   def move_left(pos)
     @board.board[@start_position][pos], @board.board[@start_position][pos-1] = @board.board[@start_position][pos-1], @board.board[@start_position][pos]
@@ -115,7 +110,6 @@ class CubeRunner
 
   def run
     @board.update
-    life_bar(@board.boardwidth)
   end
 
   def play
