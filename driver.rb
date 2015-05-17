@@ -18,7 +18,7 @@ class Player
   end
 
   def life_bar_image
-    Array.new(@lives, "|=")
+    @life_bar_image = Array.new(life_count, "|=")
   end  
 
   def life_count
@@ -27,48 +27,36 @@ class Player
 end
 
 class Board
-  attr_accessor :player
+  attr_accessor :board, :blocks, :field, :boardwidth, :boardheight
   def initialize(length, lives)
     @blocks = "[]"
     @field =  "  "
     @boardwidth = length
     @boardheight = length 
     @board = Array.new(length) {Array.new (length) {@field}}
-    @player = ::Player.new(length, lives)
   end
   
   def update  
     @board.unshift(Array.new(@boardwidth) { rand(3) == 1 ? @blocks : @field})
-    life_bar(@boardwidth)
     @board.pop
   end
 
-  def board
-    @board
-  end 
-
-  def blocks
-    @blocks
-  end
+  # def blocks
+  #   @blocks
+  # end
   
-  def field
-    @field
-  end
-
-  def life_bar(pos)
-    player.life_bar_image.each_with_index do |health, h_index|
-      @board[pos-1][h_index] = health
-    end    
-  end  
+  # def field
+  #   @field
+  # end
 end    
 
 class CubeRunner
+  attr_accessor :player
   def initialize(length, speed, lives)
     @length = length
     @lives = lives
-    @player = ::Board.new(length, lives).player 
-    @board_items = ::Board.new(length, lives)
-    @board = @board_items.board
+    @player = ::Player.new(length, lives)
+    @board = ::Board.new(length, lives)
     @start_position = (length-1)
     @row_pos = length / 2
     @speed = speed
@@ -76,41 +64,47 @@ class CubeRunner
   
   def detect_colision(pos)
     @position = @start_position
-    if @board[@position][pos] == @board_items.blocks
+    if @board.board[@position][pos] == @board.blocks
       @player.hit
     end
-    @board[@position][pos] = @player.image
+    @board.board[@position][pos] = @player.image
   end
 
   def draw
     system 'clear' or system 'cls'
-    @board.each_with_index do |cord, x|
+    @board.board.each_with_index do |cord, x|
       cord.each_with_index do |pos, y|
-        print "#{@board[x][y]}"
+        print "#{@board.board[x][y]}"
       end
       puts ""
     end
   end
+  
+  def life_bar(pos)
+    player.life_bar_image.each_with_index do |health, h_index|
+      @board.board[pos][h_index] = health
+    end    
+  end  
 
   def move_left(pos)
-    @board[@start_position][pos], @board[@start_position][pos-1] = @board[@start_position][pos-1], @board[@start_position][pos]
+    @board.board[@start_position][pos], @board.board[@start_position][pos-1] = @board.board[@start_position][pos-1], @board.board[@start_position][pos]
     @row_pos = (pos-1)
   end
 
   def move_right(pos)
-    @board[@start_position][pos], @board[@start_position][pos+1] = @board[@start_position][pos+1], @board[@start_position][pos]
+    @board.board[@start_position][pos], @board.board[@start_position][pos+1] = @board.board[@start_position][pos+1], @board.board[@start_position][pos]
     @row_pos = (pos+1)
   end
 
 
   def movement_ai(pos)
-    if @board[@start_position-2][pos] == @board_items.blocks && (@board[@start_position-2][pos+1] == @board_items.blocks || @board[@start_position-2][pos-1] == @blocks)
+    if @board.board[@start_position-2][pos] == @board.blocks && (@board.board[@start_position-2][pos+1] == @board.blocks || @board.board[@start_position-2][pos-1] == @blocks)
       rand(2) == 1 ? move_right(pos) : move_left(pos)
     end
-    if @board[@start_position-1][pos] == @board_items.blocks
-      if @board[@start_position-1][pos-1] == @board_items.blocks || @board[@start_position][pos-1] == @board_items.blocks
+    if @board.board[@start_position-1][pos] == @board.blocks
+      if @board.board[@start_position-1][pos-1] == @board.blocks || @board.board[@start_position][pos-1] == @board.blocks
         move_right(pos)
-      elsif @board[@start_position-1][pos+1] == @board_items.blocks || @board[@start_position][pos+1] == @board_items.blocks
+      elsif @board.board[@start_position-1][pos+1] == @board.blocks || @board.board[@start_position][pos+1] == @board.blocks
         move_left(pos)
       else
         rand(2) == 1 ? move_right(pos) : move_left(pos)
@@ -120,7 +114,8 @@ class CubeRunner
   end
 
   def run
-    @board_items.update
+    @board.update
+    life_bar(@board.boardwidth)
   end
 
   def play
