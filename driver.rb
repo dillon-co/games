@@ -20,7 +20,7 @@ class Player
   end
 
   def life_bar_image
-    "|=|"
+    "<>"
   end  
 
   def life_count
