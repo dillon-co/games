@@ -18,12 +18,13 @@ class Player
   end
 
   def life_bar_image
-    "|="
+    "==="
   end  
 
   def life_count
     @lives
   end    
+  
 end
 
 class Board
@@ -37,7 +38,7 @@ class Board
   end
   
   def update  
-    @board.unshift(Array.new(@boardwidth) { rand(15) == 1 ? @blocks : @field})
+    @board.unshift(Array.new(@boardwidth) { rand(10z) == 1 ? @blocks : @field})
     @board.pop
   end
 end    
@@ -115,5 +116,5 @@ class CubeRunner
   end
 end
 
-game = CubeRunner.new(30, 0.03, 10)
+game = CubeRunner.new(30, 0.03, 2)
 puts game.play
