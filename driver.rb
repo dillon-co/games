@@ -27,11 +27,13 @@ class Player
     @lives
   end  
   
-  def move_left
+  def move_left(board)
+    board[@position_height][@position], board[@position_height][@position-1] = board[@position_height][@position-1], board[@position_height][@position]
     @position -= 1
   end
 
-  def move_right
+  def move_right(board)
+    board[@position_height][@position], board[@position_height][@position+1] = board[@position_height][@position+1], board[@position_height][@position]
     @position += 1
   end  
 end
@@ -75,7 +77,7 @@ class CubeRunner
     system 'clear' or system 'cls'
     @board.board.each_with_index do |cord, x|
       cord.each_with_index do |pos, y|                              
-        @board.board[@start_position][@row_pos] = @player.image
+        @board.board[@position][@row_pos] = @player.image
         print "#{@board.board[x][y]}"
       end
       puts ""
@@ -84,20 +86,21 @@ class CubeRunner
     puts (@player.life_bar_image * @player.lives)
   end
 
-  def movement_ai(pos)
-    if @board.board[@start_position-2][pos] == @board.blocks && (@board.board[@start_position-2][pos+1] == @board.blocks || @board.board[@start_position-2][pos-1] == @blocks)
-      rand(2) == 1 ? @player.move_right : @player.move_left
+  def movement_ai
+    @row_pos = @player.position
+    if @board.board[@start_position-2][@row_pos] == @board.blocks && (@board.board[@start_position-2][@row_pos+1] == @board.blocks || @board.board[@start_position-2][@row_pos-1] == @blocks)
+      rand(2) == 1 ? @player.move_right(@board.board) : @player.move_left(@board.board, )
     end
-    if @board.board[@start_position-1][pos] == @board.blocks
-      if @board.board[@start_position-1][pos-1] == @board.blocks || @board.board[@start_position][pos-1] == @board.blocks
-        @player.move_right
-      elsif @board.board[@start_position-1][pos+1] == @board.blocks || @board.board[@start_position][pos+1] == @board.blocks
-        @player.move_left
+    if @board.board[@start_position-1][@row_pos] == @board.blocks
+      if @board.board[@start_position-1][@row_pos-1] == @board.blocks || @board.board[@start_position][@row_pos-1] == @board.blocks
+        @player.move_right(@board.board)
+      elsif @board.board[@start_position-1][@row_pos+1] == @board.blocks || @board.board[@start_position][@row_pos+1] == @board.blocks
+        @player.move_left(@board.board)
       else
-        rand(2) == 1 ? @player.move_right : @player.move_left
+        rand(2) == 1 ? @player.move_right(@board.board) : @player.move_left(@board.board)
       end
     end
-    detect_colision(pos)
+    detect_colision(@row_pos)
   end
 
   def run
@@ -107,7 +110,7 @@ class CubeRunner
   def play
     while @player.alive?
       run
-      movement_ai(@row_pos)
+      movement_ai
       draw
       sleep (@speed)
     end
