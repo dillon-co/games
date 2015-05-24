@@ -10,6 +10,11 @@ class Dice
     @o_dice_array = [@o_dice1, @o_dice2, @o_dice3]
     @d_dice_array = [@d_dice1, @d_dice2]
   end
+
+  def single_roll
+    @this_roll = @o_dice1.sample
+    @this_roll
+  end  
   
   def roll
     @o_roll_array = []
@@ -63,11 +68,96 @@ class Dice
       get_winner(o_players, d_players)
     end
   end  
+end
+
+class Territories
+  def initialize
+    @alaska = 0
+    @alberta = 0
+    @central_america = 0
+    @eastern_us = 0
+    @greenland = 0
+    @northwest_territory = 0
+    @ontario = 0
+    @quabec = 0
+    @western_us = 0
+  end
+
+  def get_victory_number(country_count, continent)
+    if country_count > 9
+      continent = 7
+    elsif country_count == 7 or country_count == 9
+      continent = 5
+    elsif country_count == 6
+      continent = 3
+    elsif country_count == 4
+      continent = 2
+    end          
+    continent
+  end  
+
+  def north_america
+    get_victory_number(9, @north_america_victory_count)
+  end  
+
+  def south_america
+    get_victory_number(4, @south_america_victory_count)
+  end
+
+  def australia   
+    get_victory_number(4, @australia_victory_count)
+  end  
+
+  def asia
+    get_victory_number(12, @asia_victory_count)
+  end
+  
+  def africa
+    get_victory_number(6, @aftric_victory_count)
+  end
+
+  def europe 
+    get_victory_number(7, @europe_victory_count)
+  end
+
+  def board
+  end 
+
+end 
+
+class Cards
+  def initialize
+  end
+  
+  def draw
+  end
+
+  def turn_in(amount_of_cards, cards_array)
+
+  end
+end
+
+class Players
+  def initialize
+  end  
 end  
 
-dice = Dice.new
+
+class PlayGame
+  def initialize
+    @dice = Dice.new
+  end
+  
+  def roll_dice(o_players, d_players)
+    @dice.get_winner(o_players, d_players)
+  end  
+end
+
+
+game = PlayGame.new
 puts "how many players does the offense have?"
 o_player_num = gets.chomp.to_i
 puts "How many players does the defense have?"
 d_player_num = gets.chomp.to_i
-dice.get_winner(o_player_num, d_player_num)
+game.roll_dice(o_player_num, d_player_num)
+stuff = Territories.new
