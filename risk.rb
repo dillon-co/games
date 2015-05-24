@@ -81,6 +81,38 @@ class Territories
     @ontario = 0
     @quabec = 0
     @western_us = 0
+    @argentina = 0
+    @brazil = 0
+    @peru = 0
+    @venezuela = 0
+    @east_austrailia = 0
+    @indonesia = 0
+    @new_guinea = 0
+    @western_australia = 0
+    @afganistan = 0
+    @china = 0
+    @irkutsk = 0
+    @japan =  0
+    @kamchatka = 0
+    @middle_east = 0
+    @mongolia = 0
+    @siam = 0
+    @siberia = 0
+    @ural = 0
+    @yakutsk = 0
+    @congo = 0
+    @east_africa = 0
+    @egypt = 0
+    @madagascar = 0
+    @north_africa = 0
+    @south_africa = 0
+    @great_britian = 0
+    @iceland = 0
+    @northern_europe = 0
+    @scnadinavia = 0
+    @southern_europe = 0
+    @western_eurpoe = 0
+    @ukraine = 0
   end
 
   def get_victory_number(country_count, continent)
