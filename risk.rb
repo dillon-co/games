@@ -66,6 +66,8 @@ class Dice
 end  
 
 dice = Dice.new
+puts "how many players does the offense have?"
 o_player_num = gets.chomp.to_i
+puts "How many players does the defense have?"
 d_player_num = gets.chomp.to_i
 dice.get_winner(o_player_num, d_player_num)
