@@ -1,6 +1,6 @@
 class Gear
   attr_reader :chainring, :cog, :wheel
-  def initialize(chainring, cog, wheel)
+  def initialize(chainring, cog, wheel=nil)
     @chainring = chainring
     @cog       = cog
     @wheel     = wheel
@@ -38,7 +38,7 @@ puts @wheel.circumference
 
 sleep 1
 
-puts Gear.new(52, 11, 26, 1.5).gear_inches
+puts Gear.new(52, 11, @wheel).gear_inches
 
 sleep 1
 
