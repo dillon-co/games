@@ -48,6 +48,44 @@ class Board
     @board = Array.new(length) {Array.new (length) {@field}}
   end
   
+  def left_side(length)
+    @left = Array.new(length) {@blocks}
+    @left
+  end
+
+  def right_side(length)
+    @right = Array.new(length) {@blocks}
+    @right
+  end
+  
+  def middle(length)
+    @middle = Array.new(length) {@field}
+  end  
+
+  def cave(left, middle_len, right)
+    @cave_arr = left_side(left) + middle(middle_len) + right_side(right)
+    @cave_arr
+  end  
+
+  def cave_update(left, middle_len, right)
+    @board.unshift(cave(left, middle_len, right))
+    @board.pop
+  end 
+
+  def get_cave_dimentions
+    @left_side_length = 0
+    @right_side_length = 0
+    @middle_length = 0
+    until @left_side_length + @right_side_length + @middle_length == @boardwidth
+      @left_side_length = rand(16)
+      @right_side_length = rand(15)
+      @middle_length = rand(500)
+    end
+      cave_update(@left_side_length, @middle_length, @right_side_length)
+  end      
+
+
+
   def update  
     @board.unshift(Array.new(@boardwidth) { rand(10) == 1 ? @blocks : @field})
     @board.pop
@@ -104,7 +142,8 @@ class CubeRunner
   end
 
   def run
-    @board.update
+    @board.get_cave_dimentions
+    # @board.update
   end
 
   def play
