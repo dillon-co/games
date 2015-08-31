@@ -84,8 +84,6 @@ class Board
       cave_update(@left_side_length, @middle_length, @right_side_length)
   end      
 
-
-
   def update  
     @board.unshift(Array.new(@boardwidth) { rand(10) == 1 ? @blocks : @field})
     @board.pop
@@ -142,8 +140,8 @@ class CubeRunner
   end
 
   def run
-    @board.get_cave_dimentions
-    # @board.update
+    # @board.get_cave_dimentions
+    @board.update
   end
 
   def play
