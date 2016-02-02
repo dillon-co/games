@@ -1,11 +1,16 @@
 class Lane
+  attr_accessor :log, :car, :space, :lane, :river 
   def initialize
     @log = "=="
     @car = "%%"
     @space = "  "
     @safe_lane = Array.new(@size*2) {"__"}
-    @lane = create_row(6, @car)
-    @river = create_row(4, @log)
+    @lane = Arr.new(10)
+    @river = Arr.new(10)
+  end  
+  
+  def create_row(frequency, object)
+    Array.new(size*2) {rand(frequency) == 1 ? object : space}
   end  
   
   def tick_row(row, object, frequency, speed)
@@ -17,15 +22,12 @@ end
 
 
 class Board
-  attr_accessor :log, :car, :space, :lane, :river, :board, :safe_lane, :size
+  attr_accessor :board, :size
   def initialize(size)
     @size = size
     @board = create_board
   end  
 
-  def create_row(frequency, object)
-    Array.new(size*2) {rand(frequency) == 1 ? object : space}
-  end  
 
   def create_board
     Array.new(@size) {
