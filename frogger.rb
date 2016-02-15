@@ -80,6 +80,7 @@ class Board
 
   def board_from_lanes
     lanes.map { |lane| lane.lane.dup }
+    # Using dup here so the board doesn't hold a reference to the Lane object
   end
 
   def draw_board
@@ -94,11 +95,9 @@ class Board
   def tick
     draw_board
     lanes.each_with_index do |lane, index|
-      @board[index] = lane.tick.dup #using dup here so the board doesn't hold a reference to the Lane object
+      @board[index] = lane.tick.dup
+      # Using dup here so the board doesn't hold a reference to the Lane object
     end
-    # puts lanes.last
-    # puts lanes.last.lane
-    # binding.pry
     sleep 0.15
   end
 
