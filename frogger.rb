@@ -1,3 +1,6 @@
+
+require 'io/console'
+require 'io/wait'
 class Lane
   attr_accessor :size, :type, :lane, :frequency, :lane_symbols
   def initialize(size, type, frequency)
@@ -83,17 +86,20 @@ class Board
     # Using dup here so the board doesn't hold a reference to the Lane object
   end
 
-  def draw_board
+  def draw_board(player)
     width = board.flatten.max.to_s.size+2
     system "clear" or system "cls"
     puts board.map { |lane| lane.map { |cell| cell.to_s.rjust(width) }.join }
     puts ""
     puts "LIFE BAR GOES HERE"
+    puts "Position[#{player[:position][:y]}][#{player[:position][:x]}]"
+    # system "stty -raw echo"
     sleep 0.1
   end
 
-  def tick
-    draw_board
+  def tick(player)
+    system 'clear' 
+    draw_board(player)
     lanes.each_with_index do |lane, index|
       @board[index] = lane.tick.dup
       # Using dup here so the board doesn't hold a reference to the Lane object
@@ -111,17 +117,40 @@ class Character
       :image => "πø"
     }
   end
+
+
+  def move(input)
+    puts "LLol\e[31m#{input}\e[0m"
+    raise 'a' if input != nil && input != ""
+    if input == 'i'
+      @player[:position][:y] = @player[:position][:y] - 1
+    elsif input == 'j'  
+      @player[:position][:x] = @player[:position][:x] - 1
+    elsif input == 'l'
+      @player[:position][:x] =  @player[:position][:x] + 1
+    elsif input == 'k'
+      @player[:position][:y]  = @player[:position][:y] + 1    
+    elsif input == 'q'
+      exit
+    end      
+  end  
 end
 
 b = Board.new(30, 4)
 c = Character.new(30)
-puts c.player[:position][:x]
+
 
 def play(game, player)
   while true
     game.board[(player.player[:position][:y])][(player.player[:position][:x])] = player.player[:image]
-    game.tick
+    game.tick(player.player)
   end
 end
 
+prompt = Thread.new do 
+  loop do 
+    # system "stty raw -echo"
+    c.move(s = STDIN.getch.downcase)
+  end  
+end
 play(b, c)
