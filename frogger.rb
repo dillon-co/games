@@ -8,7 +8,11 @@ class Lane
     @type = type
     @lane_symbols = symbols_for_lane
     @frequency = frequency
-    @lane = new_row
+    @lane =  {
+      :lane_obj => new_row,
+      :fps => frequency,
+      :time_since_last_tick => 0,
+    }
   end
 
   def new_row
@@ -36,11 +40,11 @@ class Lane
   end
 
   def tick
-    lane.unshift(rand(frequency) == 1 ? lane_symbols[:danger_symbol] : lane_symbols[:safe_symbol])
-    lane.pop
-    lane
+    lane[:lane_obj].unshift(rand(frequency) == 1 ? lane_symbols[:danger_symbol] : lane_symbols[:safe_symbol])
+    lane[:lane_obj].pop
+    lane[:time_since_last_tick] = 0
+    lane[:lane_obj]
   end
-
 end
 
 class Board
@@ -49,6 +53,7 @@ class Board
     @size = size
     @lanes = board_init
     @board = board_from_lanes
+    @board_ticks = 0
   end
 
   def board_init
@@ -82,19 +87,22 @@ class Board
   end
 
   def board_from_lanes
-    lanes.map { |lane| lane.lane.dup }
+    lanes.map { |lane| lane.lane[:lane_obj].dup }
     # Using dup here so the board doesn't hold a reference to the Lane object
   end
 
   def draw_board(player)
     width = board.flatten.max.to_s.size+2
+    board.each { |lane| lane[:time_since_last_tick] += 1}
+    @board_ticks += 1
     system "clear" or system "cls"
     puts board.map { |lane| lane.map { |cell| cell.to_s.rjust(width) }.join }
     puts ""
     puts "LIFE BAR GOES HERE"
     puts "Position[#{player[:position][:y]}][#{player[:position][:x]}]"
+    puts "#{@board_ticks} boards drawn"
     # system "stty -raw echo"
-    sleep 0.1
+     sleep 0.001
   end
 
   def tick(player)
@@ -104,7 +112,6 @@ class Board
       @board[index] = lane.tick.dup
       # Using dup here so the board doesn't hold a reference to the Lane object
     end
-    sleep 0.15
   end
 
 end

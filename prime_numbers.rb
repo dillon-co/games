@@ -20,14 +20,18 @@ class Number
     new_number = number
     until new_number >= @final_num
       new_number += number
-      number_list[new_number] = false
+      if number_list[new_number] == true 
+        number_list[new_number] = false
+      end  
     end 
   end
 
   def tick
     while @number_list.has_value?(true)
+      t = Time.now
       remove_non_primes(@primes_list[-1])
       get_primes
+      puts "number #{@primes_list[-1]} took #{Time.now - t} seconds"
     end  
   end  
 
@@ -50,7 +54,8 @@ prime_input  = gets.chomp("> ").to_i
 
 n = Number.new(prime_input)
 puts " "
-
+t = Time.now
 puts n.draw
+puts "\n\nthis took #{Time.now - t} seconds"
 
 
